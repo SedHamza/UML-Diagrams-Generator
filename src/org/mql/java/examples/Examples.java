@@ -2,8 +2,7 @@ package org.mql.java.examples;
 
 import org.mql.java.reflection.ProjectExtractor;
 
-public class Examples {
-
+public class Examples { 
 	public Examples() {
 		exp01();
 	}
