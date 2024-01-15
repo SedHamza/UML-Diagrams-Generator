@@ -5,14 +5,17 @@ import java.util.Vector;
 public class Package {
 	private String name;
 	private Vector<Class> classes;
-
+	private Vector<Interface> interfaces;
 	public Package() {
+		interfaces=new Vector<Interface>();
 		classes = new Vector<Class>();
 	}
 
 	public Package(String name) {
 		this.name = name;
 		classes = new Vector<Class>();
+		interfaces=new Vector<Interface>();
+
 	}
 
 	public Package(String name, Vector<Class> classes) {
