@@ -6,15 +6,16 @@ public class Package {
 	private String name;
 	private Vector<Class> classes;
 	private Vector<Interface> interfaces;
+
 	public Package() {
-		interfaces=new Vector<Interface>();
+		interfaces = new Vector<Interface>();
 		classes = new Vector<Class>();
 	}
 
 	public Package(String name) {
 		this.name = name;
 		classes = new Vector<Class>();
-		interfaces=new Vector<Interface>();
+		interfaces = new Vector<Interface>();
 
 	}
 
@@ -44,11 +45,25 @@ public class Package {
 		classes.add(cls);
 	}
 
+	public void addInterface(Interface in) {
+		interfaces.add(in);
+	}
+
 	@Override
 	public String toString() {
 		String rs = name;
-		for (Class c : classes) {
-			rs += "\n\t\t-" + c;
+		if (!classes.isEmpty()) {
+			rs += "\n\t\t la liste des Class est";
+			for (Class c : classes) {
+				rs += "\n\t\t-" + c;
+			}
+		}
+		
+		if (!interfaces.isEmpty()) {
+			rs += "\n\t\t la liste des interfaces est";
+			for (Interface in : interfaces) {
+				rs += "\n\t\t-" + in;
+			}
 		}
 		return rs;
 	}

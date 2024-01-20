@@ -6,6 +6,7 @@ public class Project {
 	private String name;
 	private String path;
 	private Vector<Package> packages;
+	private Vector<?> relations; 
 
 	public Project() {
 		packages = new Vector<Package>();
@@ -67,7 +68,8 @@ public class Project {
 
 	@Override
 	public String toString() {
-		String rs="le nom de Projet : " + name + "\nle chmein de projet : " + path;
+		String rs="le nom de Projet : " + name + "\nle chmein de projet : " + path+"\n \t la liste des package est : ";
+		
 		for (Package p : packages) {
 			rs+="\n\t-"+p;
 		}

@@ -8,7 +8,7 @@ public class Examples {
 	}
 
 	void exp01() {
-		String path = "C:\\Users\\pc\\eclipse-workspace\\MQL\\Seddouki hamza - UML Diagrams Generator";
+		String path = "C:\\Users\\pc\\eclipse-workspace\\MQL\\TestProjetct";
 		ProjectExtractor.extractProject(path);
 	}
 

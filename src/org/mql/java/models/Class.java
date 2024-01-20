@@ -12,7 +12,7 @@ public class Class {
 	private Method[] methodes;
 	private Constructor[] constructors;
 	private Field[] fields;
-	private Class[] c;
+	private Class[] classes;
 
 	public Class(java.lang.Class<?> cls) {
 		this.name = cls.getName();
@@ -21,9 +21,9 @@ public class Class {
 		constructors = cls.getDeclaredConstructors();
 		fields = cls.getDeclaredFields();
 		modifier = Modifier.toString(cls.getModifiers());
-		c = new Class[cls.getClasses().length];
-		for (int i = 0; i < c.length; i++) {
-			c[i] = new Class(cls.getClasses()[i]);
+		classes = new Class[cls.getClasses().length];
+		for (int i = 0; i < classes.length; i++) {
+			classes[i] = new Class(cls.getClasses()[i]);
 		}
 	}
 
@@ -72,6 +72,8 @@ public class Class {
 	}
 	@Override
 	public String toString() {
+		String rs="";
+		
 		return simpleName;
 	}
 
