@@ -6,10 +6,14 @@ public class Project {
 	private String name;
 	private String path;
 	private Vector<Package> packages;
-	private Vector<?> relations; 
+	private Vector<Relation> relations; 
+	private Vector<Class> classes;
+	
 
 	public Project() {
 		packages = new Vector<Package>();
+		relations=new Vector<Relation>();
+		classes =new Vector<Class>();
 	}
 
 	public Project(String name, String path) {
@@ -17,7 +21,8 @@ public class Project {
 		this.name = name;
 		this.path = path;
 		packages = new Vector<Package>();
-
+		relations=new Vector<Relation>();
+		classes =new Vector<Class>();
 	}
 
 	public Project(String name, String path, Vector<Package> packages) {
@@ -64,6 +69,28 @@ public class Project {
 		}
 		packages.add(new Package(pkg));
 		return packages.getLast();
+	}
+	public void addClass(Class c) {
+		classes.add(c);
+	}
+	public void addRelation(Relation r) {
+		relations.add(r);
+	}
+	
+	public Vector<Relation> getRelations() {
+		return relations;
+	}
+
+	public void setRelations(Vector<Relation> relations) {
+		this.relations = relations;
+	}
+
+	public Vector<Class> getClasses() {
+		return classes;
+	}
+
+	public void setClasses(Vector<Class> classes) {
+		this.classes = classes;
 	}
 
 	@Override

@@ -1,13 +1,26 @@
 package org.mql.java.reflection;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
+import java.util.List;
+import java.util.Vector;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.mql.java.models.Association;
 import org.mql.java.models.Class;
+import org.mql.java.models.Extension;
+import org.mql.java.models.Implementation;
 import org.mql.java.models.Interface;
 import org.mql.java.models.Package;
 import org.mql.java.models.Project;
+import org.mql.java.models.Relation;
 
 public class ProjectExtractor {
-
 
 	public static Project extractProject(String projectUrl) {
 		Project project = new Project();
@@ -21,11 +34,12 @@ public class ProjectExtractor {
 
 			// Explorer récursivement les fichiers du projet
 			exploreDirectory(projectDirectory, project, "");
-			
+
 		} catch (Exception e) {
 			System.out.println("Erreur en find file project : " + e.getMessage());
 		}
-		System.out.println(project);
+		extractRelations(project);
+//		System.out.println(project);
 		return project;
 	}
 
@@ -38,13 +52,18 @@ public class ProjectExtractor {
 				} else if (file.isFile() && file.getName().endsWith(".class")) {
 					Package pk = project.addPackage(pack);
 					try {
-						java.lang.Class<?> cls = new MaClassLoader(project.getPath()+"//bin", pk.getName() + "." + file.getName().replace(".class", "")).getMaClass();
-						if(cls.isInterface()) {
-							pk.addInterface(new Interface(cls));
+						java.lang.Class<?> cls = new MaClassLoader(project.getPath() + "//bin",
+								pk.getName() + "." + file.getName().replace(".class", "")).getMaClass();
+						if (cls != null) {
+							if (cls.isInterface()) {
+								pk.addInterface(new Interface(cls));
+							} else {
+								Class c = new Class(cls);
+								pk.addClass(c);
+								project.addClass(c);
+							}
 						}
-						else {
-							pk.addClass(new Class(cls));	
-						}
+
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -52,5 +71,53 @@ public class ProjectExtractor {
 			}
 		}
 	}
-	
+
+	private static void extractRelations(Project project) {
+		Vector<Package> pkgs = project.getPackages();
+		for (int i = 0; i < pkgs.size(); i++) {
+			Vector<Class> cls = pkgs.get(i).getClasses();
+
+			for (int j = 0; j < cls.size(); j++) {
+				setExtensionRelation(project, cls.get(j));
+				setImplemetationRelation(project, cls.get(j));
+				setRelations(project, cls.get(j));
+			}
+		}
+	}
+
+	private static void setRelations(Project project, Class cls) {
+		for (Field f : cls.getFields()) {
+			if (f.getType().isArray()) {
+				List<Class> cl = project.getClasses().stream()
+						.filter(e -> e.getSimpleName().equals(f.getType().getComponentType().getSimpleName())).toList();
+				if (!cl.isEmpty()) {
+					project.addRelation(new Association(cl.get(0), cls, "0,*", "0,1"));
+				}
+			} else if (Collection.class.isAssignableFrom(f.getType())) {
+				System.out.println("is Collection " + f.getType()+" type is ");
+
+			} else {
+				List<Class> cl = project.getClasses().stream()
+						.filter(e -> e.getSimpleName().equals(f.getType().getSimpleName())).toList();
+				if (!cl.isEmpty()) {
+					System.out.println(
+							"we have relation from " + cl.get(0).getSimpleName() + " and " + cls.getSimpleName());
+					project.addRelation(new Association(cl.get(0), cls, "0,1", "0,*"));
+				}
+			}
+
+		}
+	}
+
+	private static void setExtensionRelation(Project project, Class cls) {
+		if (cls.getSuperClass() != null) {
+			project.addRelation(new Extension(cls.getSuperClass(), cls));
+		}
+	}
+
+	private static void setImplemetationRelation(Project project, Class cls) {
+		for (int i = 0; i < cls.getImplementedClass().length; i++) {
+			project.addRelation(new Implementation(cls.getImplementedClass()[i], cls));
+		}
+	}
 }
