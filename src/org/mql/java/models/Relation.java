@@ -2,7 +2,7 @@ package org.mql.java.models;
 
 import java.util.Vector;
 
-public class Relation {
+public class Relation implements RelationType{
 
 	private Class source;
 	private Class target;
@@ -58,4 +58,35 @@ public class Relation {
 	public void setCarTarget(String carTarget) {
 		this.carTarget = carTarget;
 	}
+
+	@Override
+	public boolean isAssociation() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAggregation() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isComposition() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isImplementation() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isExtension() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 }

@@ -40,6 +40,20 @@ public class ProjectExtractor {
 		}
 		extractRelations(project);
 //		System.out.println(project);
+		Vector<Relation> relations = project.getRelations();
+		for (int i = 0; i < relations.size(); i++) {
+			if (relations.get(i).isAssociation()) {
+				System.out.println("we have assosiation from " + relations.get(i).getSource().getSimpleName() + " to "
+						+ relations.get(i).getTarget().getSimpleName());
+			} else if (relations.get(i).isExtension()) {
+				System.out.println("we have Extension from " + relations.get(i).getSource().getSimpleName() + " to "
+						+ relations.get(i).getTarget().getSimpleName());
+			} else if (relations.get(i).isImplementation()) {
+				System.out.println("we have Implementation from "+ relations.get(i).getSource().getSimpleName() + " to "
+						+ relations.get(i).getTarget().getSimpleName());
+			}
+		}
+		System.out.println();
 		return project;
 	}
 
@@ -89,19 +103,20 @@ public class ProjectExtractor {
 		for (Field f : cls.getFields()) {
 			if (f.getType().isArray()) {
 				List<Class> cl = project.getClasses().stream()
-						.filter(e -> e.getSimpleName().equals(f.getType().getComponentType().getSimpleName())).toList();
+						.filter(e -> e.getName().equals(f.getType().getComponentType().getName())).toList();
+
 				if (!cl.isEmpty()) {
+//					System.out.println("we have relation from "+cl.get(0).getSimpleName()+" and "+cls.getSimpleName());
 					project.addRelation(new Association(cl.get(0), cls, "0,*", "0,1"));
 				}
 			} else if (Collection.class.isAssignableFrom(f.getType())) {
-				System.out.println("is Collection " + f.getType()+" type is ");
+//				System.out.println("is Collection " + f.getType()+" type is ");
 
 			} else {
-				List<Class> cl = project.getClasses().stream()
-						.filter(e -> e.getSimpleName().equals(f.getType().getSimpleName())).toList();
+				List<Class> cl = project.getClasses().stream().filter(e -> e.getName().equals(f.getType().getName()))
+						.toList();
 				if (!cl.isEmpty()) {
-					System.out.println(
-							"we have relation from " + cl.get(0).getSimpleName() + " and " + cls.getSimpleName());
+//					System.out.println("we have relation from " + cl.get(0).getSimpleName() + " and " + cls.getSimpleName());
 					project.addRelation(new Association(cl.get(0), cls, "0,1", "0,*"));
 				}
 			}

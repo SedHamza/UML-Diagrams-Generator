@@ -25,10 +25,10 @@ public class Class {
 			constructors = cls.getDeclaredConstructors();
 			fields = cls.getDeclaredFields();
 			modifier = Modifier.toString(cls.getModifiers());
-			superClass = cls.getSuperclass() == null ? null : new Class(cls.getSuperclass());
-			implementedClass = cls.getInterfaces() == null ? null : new Class[cls.getInterfaces().length];
+			superClass = cls.getSuperclass() == Object.class ? null : new Class(cls.getSuperclass().getName());
+			implementedClass = cls.getInterfaces() == null ? new Class[0] : new Class[cls.getInterfaces().length];
 			for (int i = 0; i < implementedClass.length; i++) {
-				implementedClass[i] = new Class(cls.getInterfaces()[i]);
+				implementedClass[i] = new Class(cls.getInterfaces()[i].getName());
 			}
 			localClasses = new Class[cls.getClasses().length];
 			for (int i = 0; i < localClasses.length; i++) {
@@ -38,7 +38,8 @@ public class Class {
 	}
 
 	public Class(String className) {
-		this.name = className;
+		this.name = className;		
+		this.simpleName=className.split("\\.")[className.split("\\.").length-1];
 	}
 
 	public String getName() {
