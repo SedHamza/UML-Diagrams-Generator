@@ -53,7 +53,6 @@ public class ProjectExtractor {
 						+ relations.get(i).getTarget().getSimpleName());
 			}
 		}
-		System.out.println();
 		return project;
 	}
 

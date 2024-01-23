@@ -4,6 +4,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.mql.java.models.Interface;
 import org.mql.java.models.Project;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -41,26 +42,35 @@ public class XMLWriter {
 			// Créer l'élément racine
 			Element rootElement = document.createElement("project");
 			document.appendChild(rootElement);
+			Element projectName = document.createElement("name");
+			projectName.appendChild(document.createTextNode(project.getName()));
 
+			Element projectPath = document.createElement("path");
+			projectPath.appendChild(document.createTextNode(project.getPath()));
+
+			rootElement.appendChild(projectName);
+			rootElement.appendChild(projectPath);
 			// Créer l'élément du package
-			Element packsElement = document.createElement("packages");
-			for (int i = 0; i < project.getPackages().size(); i++) {
-				Element packElement = document.createElement("package");
-				Element packNameElement = document.createElement("name");
-				packNameElement.appendChild(document.createTextNode(project.getPackages().get(i).getName()));
-				packElement.appendChild(packNameElement);
-				packElement.appendChild(getClassesXML(project.getPackages().get(i).getClasses(), document, "classes"));
-				packsElement.appendChild(packElement);
+			if (project.getPackages().size() != 0) {
+				Element packsElement = document.createElement("packages");
+				for (int i = 0; i < project.getPackages().size(); i++) {
+					Element packElement = document.createElement("package");
+					Element packNameElement = document.createElement("name");
+					packNameElement.appendChild(document.createTextNode(project.getPackages().get(i).getName()));
+					packElement.appendChild(packNameElement);
+					Element classesElement = getClassesXML(project.getPackages().get(i).getClasses(), document,
+							"classes");
+					if (classesElement != null)
+						packElement.appendChild(classesElement);
+					Element interfacesElement = getInterfacesXML(project.getPackages().get(i).getInterfaces(), document);
+					if (classesElement != null)
+						packElement.appendChild(classesElement);
+					packsElement.appendChild(packElement);
+				}
+				rootElement.appendChild(packsElement);
 			}
-			rootElement.appendChild(packsElement);
-
-			// Transformez le document en une chaîne XML
 			String xmlString = convertDocumentToString(document);
-
-			// Spécifiez le chemin complet du fichier XML en utilisant le chemin relatif
 			String xmlFilePath = resourcesFolderPath + File.separator + project.getName();
-
-			// Écrire la chaîne XML dans un fichier
 			XMLUtils.writeToFile(xmlString, xmlFilePath);
 
 		} catch (ParserConfigurationException e) {
@@ -68,7 +78,33 @@ public class XMLWriter {
 		}
 	}
 
+	private static Element getInterfacesXML(Vector<Interface> interfaces, Document document) {
+		if (interfaces.isEmpty())
+			return null;
+		Element intefacesElement = document.createElement("interfaces");
+		for (int i = 0; i < interfaces.size(); i++) {
+			Element intefaceElement = document.createElement("interface");
+			Element intefaceName = document.createElement("name");
+			intefaceName.appendChild(document.createTextNode(interfaces.get(i).getName()));
+			intefaceElement.appendChild(intefaceName);
+			Element intefaceSName = document.createElement("simpleName");
+			intefaceSName.appendChild(document.createTextNode(interfaces.get(i).getSimpleName()));
+			intefaceElement.appendChild(intefaceSName);
+			Element filedsElement = getClassFieldsXML(interfaces.get(i).getFields(), document);
+			if (filedsElement != null)
+				intefaceElement.appendChild(filedsElement);
+			Element methodesElement = getClassMethodesXML(interfaces.get(i).getMethodes(), document);
+			if (methodesElement != null)
+				intefaceElement.appendChild(methodesElement);
+			intefacesElement.appendChild(intefaceElement);
+
+		}
+		return intefacesElement;
+	}
+
 	private static Element getClassesXML(Vector<org.mql.java.models.Class> cls, Document document, String element) {
+		if (cls.isEmpty())
+			return null;
 		Element classesElement = document.createElement(element);
 
 		for (int i = 0; i < cls.size(); i++) {
@@ -78,13 +114,13 @@ public class XMLWriter {
 
 			Element classNameElement = document.createElement("name");
 			classNameElement.appendChild(document.createTextNode(cls.get(i).getName()));
-			
+
 			Element classSNameElement = document.createElement("simpleName");
 			classSNameElement.appendChild(document.createTextNode(cls.get(i).getSimpleName()));
-		
+
 			classElement.appendChild(classNameElement);
 			classElement.appendChild(classSNameElement);
-			
+
 			Element superClass = getSupperClassXML(cls.get(i).getSuperClass(), document);
 			if (superClass != null)
 				classElement.appendChild(superClass);
@@ -109,7 +145,6 @@ public class XMLWriter {
 			if (localClasses != null)
 				classElement.appendChild(localClasses);
 
-			
 			classesElement.appendChild(classElement);
 		}
 		return classesElement;

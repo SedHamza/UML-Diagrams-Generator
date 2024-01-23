@@ -41,6 +41,15 @@ public class Package {
 		this.classes = classes;
 	}
 
+	
+	public Vector<Interface> getInterfaces() {
+		return interfaces;
+	}
+
+	public void setInterfaces(Vector<Interface> interfaces) {
+		this.interfaces = interfaces;
+	}
+
 	public void addClass(Class cls) {
 		classes.add(cls);
 	}
