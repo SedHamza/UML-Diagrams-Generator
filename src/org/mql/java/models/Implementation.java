@@ -3,7 +3,7 @@ package org.mql.java.models;
 public class Implementation  extends Relation implements RelationType{
 	
 	
-	public Implementation(Class source, Class target) {
+	public Implementation(Entity source, Entity target) {
 		super(source, target);
 	}
 	public boolean isAggregation() {

@@ -2,8 +2,10 @@ package org.mql.java.models;
 
 public class Extension extends Relation implements RelationType {
 	
-	public Extension(Class source, Class target) {
+	public Extension(Entity source, Entity target) {
 		super(source, target);
+//		System.out.println("we haaaavee"+source.getSimpleName());
+
 	}
 
 	public boolean isAggregation() {

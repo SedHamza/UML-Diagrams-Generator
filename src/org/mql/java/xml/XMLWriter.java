@@ -4,6 +4,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.mql.java.models.Entity;
 import org.mql.java.models.Interface;
 import org.mql.java.models.Project;
 import org.w3c.dom.Document;
@@ -164,7 +165,7 @@ public class XMLWriter {
 		return implementedClassElement;
 	}
 
-	private static Element getSupperClassXML(org.mql.java.models.Class cls, Document document) {
+	private static Element getSupperClassXML(Entity cls, Document document) {
 		if (cls == null)
 			return null;
 		Element superClassElement = document.createElement("superClass");

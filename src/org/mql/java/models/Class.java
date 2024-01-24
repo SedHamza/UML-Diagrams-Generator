@@ -5,57 +5,44 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-public class Class {
+import org.mql.java.ui.ClassNode;
+
+public class Class extends Entity {
 	private String modifier;
-	private String name;
-	private String simpleName;
 	private Method[] methodes;
 	private Constructor[] constructors;
 	private Field[] fields;
-	private Class superClass;
 	private Class[] implementedClass;
 	private Class[] localClasses;
 
 	public Class(java.lang.Class<?> cls) {
-		
-			this.modifier = Modifier.toString(cls.getModifiers());
-			this.name = cls.getName();
-			this.simpleName = cls.getSimpleName();
-			methodes = cls.getDeclaredMethods();
-			constructors = cls.getDeclaredConstructors();
-			fields = cls.getDeclaredFields();
-			modifier = Modifier.toString(cls.getModifiers());
-			superClass = cls.getSuperclass() == Object.class ? null : new Class(cls.getSuperclass().getName());
-			implementedClass = cls.getInterfaces() == null ? new Class[0] : new Class[cls.getInterfaces().length];
-			for (int i = 0; i < implementedClass.length; i++) {
-				implementedClass[i] = new Class(cls.getInterfaces()[i].getName());
-			}
-			localClasses = new Class[cls.getClasses().length];
-			for (int i = 0; i < localClasses.length; i++) {
-				localClasses[i] = new Class(cls.getClasses()[i]);
-			}
-		
+
+		super(cls.getName(), cls.getSimpleName());
+		this.modifier = Modifier.toString(cls.getModifiers());
+
+		methodes = cls.getDeclaredMethods();
+		constructors = cls.getDeclaredConstructors();
+		fields = cls.getDeclaredFields();
+		modifier = Modifier.toString(cls.getModifiers());
+		if (cls.getSuperclass() != Object.class) {
+			System.out.println(cls.getSuperclass().getSimpleName());
+			setSuperClass(new Class(cls.getSuperclass().getName()));
+		}
+//			superClass = cls.getSuperclass() == Object.class ? null : new Class(cls.getSuperclass());
+		implementedClass = cls.getInterfaces() == null ? new Class[0] : new Class[cls.getInterfaces().length];
+		for (int i = 0; i < implementedClass.length; i++) {
+			implementedClass[i] = new Class(cls.getInterfaces()[i].getName());
+		}
+		localClasses = new Class[cls.getClasses().length];
+		for (int i = 0; i < localClasses.length; i++) {
+			localClasses[i] = new Class(cls.getClasses()[i]);
+		}
+
 	}
 
 	public Class(String className) {
-		this.name = className;		
-		this.simpleName=className.split("\\.")[className.split("\\.").length-1];
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSimpleName() {
-		return simpleName;
-	}
-
-	public void setSimpleName(String simpleName) {
-		this.simpleName = simpleName;
+		super(className);
+		System.out.println("--" + className);
 	}
 
 	public Method[] getMethodes() {
@@ -90,14 +77,6 @@ public class Class {
 		this.modifier = modifier;
 	}
 
-	public Class getSuperClass() {
-		return superClass;
-	}
-
-	public void setSuperClass(Class superClass) {
-		this.superClass = superClass;
-	}
-
 	public Class[] getImplementedClass() {
 		return implementedClass;
 	}
@@ -114,11 +93,23 @@ public class Class {
 		this.localClasses = localClasses;
 	}
 
+
+
 	@Override
 	public String toString() {
-		String rs = "";
+		return super.getSimpleName();
+	}
 
-		return simpleName;
+	@Override
+	public boolean isClass() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isInterface() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

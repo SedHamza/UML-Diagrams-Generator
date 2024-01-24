@@ -4,8 +4,8 @@ import java.util.Vector;
 
 public class Relation implements RelationType{
 
-	private Class source;
-	private Class target;
+	private Entity source;
+	private Entity target;
 	private String carSource;
 	private String carTarget;
 
@@ -13,13 +13,13 @@ public class Relation implements RelationType{
 
 	}
 
-	public Relation(Class source, Class target) {
+	public Relation(Entity source, Entity target) {
 		super();
 		this.source = source;
 		this.target = target;
 	}
 	
-	public Relation(Class source, Class target, String carSource, String carTarget) {
+	public Relation(Entity source, Entity target, String carSource, String carTarget) {
 		super();
 		this.source = source;
 		this.target = target;
@@ -27,7 +27,7 @@ public class Relation implements RelationType{
 		this.carTarget = carTarget;
 	}
 
-	public Class getSource() {
+	public Entity getSource() {
 		return source;
 	}
 
@@ -35,7 +35,7 @@ public class Relation implements RelationType{
 		this.source = source;
 	}
 
-	public Class getTarget() {
+	public Entity getTarget() {
 		return target;
 	}
 

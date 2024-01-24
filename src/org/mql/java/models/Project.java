@@ -7,13 +7,13 @@ public class Project {
 	private String path;
 	private Vector<Package> packages;
 	private Vector<Relation> relations; 
-	private Vector<Class> classes;
+	private Vector<Entity> classes;
 	
 
 	public Project() {
 		packages = new Vector<Package>();
 		relations=new Vector<Relation>();
-		classes =new Vector<Class>();
+		classes =new Vector<Entity>();
 	}
 
 	public Project(String name, String path) {
@@ -22,7 +22,7 @@ public class Project {
 		this.path = path;
 		packages = new Vector<Package>();
 		relations=new Vector<Relation>();
-		classes =new Vector<Class>();
+		classes =new Vector<Entity>();
 	}
 
 	public Project(String name, String path, Vector<Package> packages) {
@@ -70,7 +70,7 @@ public class Project {
 		packages.add(new Package(pkg));
 		return packages.getLast();
 	}
-	public void addClass(Class c) {
+	public void addClass(Entity c) {
 		classes.add(c);
 	}
 	public void addRelation(Relation r) {
@@ -85,11 +85,11 @@ public class Project {
 		this.relations = relations;
 	}
 
-	public Vector<Class> getClasses() {
+	public Vector<Entity> getClasses() {
 		return classes;
 	}
 
-	public void setClasses(Vector<Class> classes) {
+	public void setClasses(Vector<Entity> classes) {
 		this.classes = classes;
 	}
 

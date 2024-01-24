@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import org.mql.java.models.Association;
 import org.mql.java.models.Class;
+import org.mql.java.models.Entity;
 import org.mql.java.models.Extension;
 import org.mql.java.models.Implementation;
 import org.mql.java.models.Interface;
@@ -49,8 +50,8 @@ public class ProjectExtractor {
 				System.out.println("we have Extension from " + relations.get(i).getSource().getSimpleName() + " to "
 						+ relations.get(i).getTarget().getSimpleName());
 			} else if (relations.get(i).isImplementation()) {
-				System.out.println("we have Implementation from "+ relations.get(i).getSource().getSimpleName() + " to "
-						+ relations.get(i).getTarget().getSimpleName());
+				System.out.println("we have Implementation from " + relations.get(i).getSource().getSimpleName()
+						+ " to " + relations.get(i).getTarget().getSimpleName());
 			}
 		}
 		return project;
@@ -68,8 +69,12 @@ public class ProjectExtractor {
 						java.lang.Class<?> cls = new MaClassLoader(project.getPath() + "//bin",
 								pk.getName() + "." + file.getName().replace(".class", "")).getMaClass();
 						if (cls != null) {
+							
 							if (cls.isInterface()) {
-								pk.addInterface(new Interface(cls));
+								Interface in = new Interface(cls);
+								pk.addInterface(in);
+								project.addClass(in);
+
 							} else {
 								Class c = new Class(cls);
 								pk.addClass(c);
@@ -95,27 +100,30 @@ public class ProjectExtractor {
 				setImplemetationRelation(project, cls.get(j));
 				setRelations(project, cls.get(j));
 			}
+			Vector<Interface> interfaces = pkgs.get(i).getInterfaces();
+			for (int j = 0; j < interfaces.size(); j++) {
+				setExtensionRelation(project, interfaces.get(j));
+			}
+			
+			
 		}
 	}
 
 	private static void setRelations(Project project, Class cls) {
 		for (Field f : cls.getFields()) {
 			if (f.getType().isArray()) {
-				List<Class> cl = project.getClasses().stream()
+				List<Entity> cl = project.getClasses().stream()
 						.filter(e -> e.getName().equals(f.getType().getComponentType().getName())).toList();
 
 				if (!cl.isEmpty()) {
-//					System.out.println("we have relation from "+cl.get(0).getSimpleName()+" and "+cls.getSimpleName());
 					project.addRelation(new Association(cl.get(0), cls, "0,*", "0,1"));
 				}
 			} else if (Collection.class.isAssignableFrom(f.getType())) {
-//				System.out.println("is Collection " + f.getType()+" type is ");
 
 			} else {
-				List<Class> cl = project.getClasses().stream().filter(e -> e.getName().equals(f.getType().getName()))
+				List<Entity> cl = project.getClasses().stream().filter(e -> e.getName().equals(f.getType().getName()))
 						.toList();
 				if (!cl.isEmpty()) {
-//					System.out.println("we have relation from " + cl.get(0).getSimpleName() + " and " + cls.getSimpleName());
 					project.addRelation(new Association(cl.get(0), cls, "0,1", "0,*"));
 				}
 			}
@@ -123,15 +131,20 @@ public class ProjectExtractor {
 		}
 	}
 
-	private static void setExtensionRelation(Project project, Class cls) {
+	private static void setExtensionRelation(Project project, Entity cls) {
 		if (cls.getSuperClass() != null) {
-			project.addRelation(new Extension(cls.getSuperClass(), cls));
+			System.out.println(
+					"ona une extension de class " + cls.getSuperClass().getSimpleName() + " to " + cls.getSimpleName());
+			Entity en=project.getClasses().stream().filter(e->e.getName().equals(cls.getSuperClass().getName())).toList().get(0);
+			project.addRelation(new Extension(en, cls));
 		}
 	}
 
 	private static void setImplemetationRelation(Project project, Class cls) {
 		for (int i = 0; i < cls.getImplementedClass().length; i++) {
-			project.addRelation(new Implementation(cls.getImplementedClass()[i], cls));
+			Class cl=cls.getImplementedClass()[i];
+			Entity en=project.getClasses().stream().filter(e->e.isInterface()&&e.getName().equals(cl.getName())).toList().get(0);
+			project.addRelation(new Implementation(en, cls));
 		}
 	}
 }

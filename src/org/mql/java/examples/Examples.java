@@ -18,7 +18,7 @@ public class Examples {
 	}
 	void exp02() {
 		String path = "C:\\Users\\pc\\eclipse-workspace\\MQL\\TestProjetct";
-
+//		String path = "C:\\Users\\pc\\eclipse-workspace\\MQL\\p01-revision";
 		new Window(ProjectExtractor.extractProject(path));
 	}
 

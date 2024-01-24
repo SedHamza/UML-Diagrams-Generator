@@ -4,34 +4,25 @@ import java.beans.JavaBean;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class Interface {
+public class Interface extends Entity {
 
-	private String name;
-	private String simpleName;
 	private Method[] methodes;
 	private Field[] fields;
 
 	public Interface(java.lang.Class<?> cls) {
-		name = cls.getName();
-		simpleName = cls.getSimpleName();
+		super(cls.getName(), cls.getSimpleName());
+
 		methodes = cls.getDeclaredMethods();
-		fields=cls.getDeclaredFields();
+		fields = cls.getDeclaredFields();
+		if (cls.getInterfaces().length > 0) {
+			System.out.println(" interface const " + cls.getInterfaces()[0]);
+			setSuperClass(new Interface(cls.getInterfaces()[0].getName()));
+		}
 	}
 
-	public String getName() {
-		return name;
-	}
+	public Interface(String name) {
+		super(name);
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSimpleName() {
-		return simpleName;
-	}
-
-	public void setSimpleName(String simpleName) {
-		this.simpleName = simpleName;
 	}
 
 	public Method[] getMethodes() {
@@ -41,9 +32,10 @@ public class Interface {
 	public void setMethodes(Method[] methodes) {
 		this.methodes = methodes;
 	}
+
 	@Override
 	public String toString() {
-		return simpleName;
+		return super.getSimpleName();
 	}
 
 	public Field[] getFields() {
@@ -52,6 +44,18 @@ public class Interface {
 
 	public void setFields(Field[] fields) {
 		this.fields = fields;
+	}
+
+	@Override
+	public boolean isClass() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isInterface() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

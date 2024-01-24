@@ -3,7 +3,7 @@ package org.mql.java.models;
 public class Association  extends Relation implements RelationType{
 
 	
-	public Association(Class source, Class target, String carSource, String carTarget) {
+	public Association(Entity source, Entity target, String carSource, String carTarget) {
 		super(source,target,carSource,carTarget);
 	}
 	

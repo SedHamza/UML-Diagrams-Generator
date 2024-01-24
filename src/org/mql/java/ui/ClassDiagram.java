@@ -1,20 +1,30 @@
 package org.mql.java.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 import org.mql.java.models.Relation;
+import org.mql.java.ui.relation.Association;
+import org.mql.java.ui.relation.Extends;
 import org.mql.java.models.Class;
+import org.mql.java.models.Entity;
+import org.mql.java.models.Interface;
 import org.mql.java.models.Project;
 
 public class ClassDiagram extends JPanel {
-	Vector<ClassNode> classNodes;
-	Vector<Class> classes;
+	Vector<EntityNode> entityNodes;
+	Vector<Entity> entities;
 	Vector<Relation> relations;
 
 	public ClassDiagram() {
@@ -23,56 +33,90 @@ public class ClassDiagram extends JPanel {
 
 	public ClassDiagram(Project project) {
 		setLayout(null);
-
-		classes = project.getClasses();
+		entities = project.getClasses();
 		relations = project.getRelations();
+		draw();
 	}
 
-	public ClassDiagram(Vector<Class> classes, Vector<Relation> relations) {
+	public ClassDiagram(Vector<Entity> classes, Vector<Relation> relations) {
 		super();
 		setLayout(null);
-		this.classNodes = new Vector<ClassNode>();
-		this.classes = classes;
+		this.entities = classes;
 		this.relations = relations;
-		init();
 
 	}
 
-	public void init() {
-		int y = 0, x = 0;
+	public void draw() {
+		this.entityNodes = new Vector<EntityNode>();
+		int lgn = 0, cln = 0;
+		for (int i = 0; i < entities.size(); i++) {
 
-		for (int i = 0; i < classes.size(); i++) {
-			ClassNode classNode;
-			if (x >= 2) {
-				x = 0;
-				y++;
+			if (cln >= 5) {
+				cln = 0;
+				lgn++;
 			}
+			if (entities.get(i).isClass()) {
+				entities.get(i).setEntityNode(addClass((Class) entities.get(i), cln, lgn));
 
-			classNode = new ClassNode(classes.get(i), 200 * x + 10, 300 * y + 10);
-			classNode.setLocation(classNode.getX(), classNode.getY());
-			classNode.setSize(classNode.WIDTH, classNode.HEIGHT);
-			classNode.setBackground(Color.white);
-
-			
-			add(classNode);
-
-
-			classNodes.add(classNode);
-			x++;
+			} else {
+				entities.get(i).setEntityNode(addInterface((Interface) entities.get(i), cln, lgn));
+			}
+			cln++;
 
 		}
 	}
 
+	ClassNode addClass(Class c, int cln, int lgn) {
+		ClassNode classNode = new ClassNode(c, ClassNode.WIDTH * cln + 50 * (cln), ClassNode.HEIGHT * lgn + 50 * (lgn),
+				this);
+		classNode.setLocation(classNode.getX(), classNode.getY());
 
-//	@Override
-//	protected void paintComponent(Graphics g) {
-//		super.paintComponent(g);
-////		for (int i = 0; i < classNodes.size(); i++) {
-////			JPanel classNode = classNodes.get(i);
-////			((ClassNode) classNode).draw(g);
-////		}
-//	}
+		classNode.setSize(ClassNode.WIDTH, ClassNode.HEIGHT);
+		classNode.setBackground(Color.white);
 
+		add(classNode);
 
+		entityNodes.add(classNode);
+		return classNode;
+	}
+
+	private InterfaceNode addInterface(Interface in, int cln, int lgn) {
+		InterfaceNode interfaceNode = new InterfaceNode(in, ClassNode.WIDTH * cln + 50 * (cln),
+				ClassNode.HEIGHT * lgn + 50 * (lgn), this);
+		interfaceNode.setLocation(interfaceNode.getX(), interfaceNode.getY());
+		interfaceNode.setSize(ClassNode.WIDTH, ClassNode.HEIGHT);
+		interfaceNode.setBackground(Color.white);
+		add(interfaceNode);
+		entityNodes.add(interfaceNode);
+
+		return interfaceNode;
+	}
+
+	public void updateAssociations() {
+		repaint(); // Repaint the diagram after updating associations
+	}
+
+	@Override
+	public void paint(Graphics g) {
+
+		super.paint(g);
+
+		for (Relation r : relations) {
+			if (r.isAssociation()) {
+				new Association((Class) r.getSource(), (Class) r.getTarget()).draw(g);
+			}
+			if (r.isExtension()) {
+				new Extends(r.getSource(), r.getTarget()).draw(g);
+			}
+			if(r.isImplementation()) {
+				new Extends(r.getSource(), r.getTarget()).draw(g);
+
+			}
+
+		}
+//		for (ClassNode classNode : classNodes) {
+//			new Association(classNode.getX(), classNode.getY(), 500, 500).draw(g);
+//		}
+	}
 
 }
