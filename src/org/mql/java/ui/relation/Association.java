@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.mql.java.models.Class;
+import org.mql.java.models.Entity;
 import org.mql.java.ui.ClassNode;
 import org.mql.java.ui.EntityNode;
 import org.mql.java.util.PointsProchesPerimetreRectangles;
@@ -12,7 +13,7 @@ import org.mql.java.util.PointsProchesPerimetreRectangles;
 public class Association {
 	private int sx, sy, tx, ty;
 
-	public Association(Class source, Class target) {
+	public Association(Entity source, Entity target) {
 		EntityNode node = source.getEntityNode();
 		Rectangle r1 = new Rectangle(node.getX(), node.getY(), node.getWidth(), node.getHeight());
 		node = target.getEntityNode();

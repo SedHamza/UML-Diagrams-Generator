@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -29,8 +30,19 @@ public class MethodPart extends JPanel {
 	private void displayMethodes(JTextArea textArea) {
 		StringBuilder methodText = new StringBuilder();
 		for (Method m : methods) {
-			methodText.append(" + ").append(m.getName());
-			methodText.append("(").append(getAttributeMethod(m)).append("):");
+	       	if(Modifier.toString(m.getModifiers()).equals("public")) {
+	       		methodText.append(" + ");
+        	}
+        	else if(Modifier.toString(m.getModifiers()).equals("private")){
+        		methodText.append(" - ");
+
+        	}
+        	else {
+        		methodText.append(" # ");
+
+        	}
+			methodText.append(m.getName());
+			methodText.append("(").append(getAttributeMethod(m)).append(") : ");
 			methodText.append(m.getReturnType().getSimpleName()).append("\n");
 		}
 		textArea.setText(methodText.toString());
@@ -39,8 +51,8 @@ public class MethodPart extends JPanel {
 	private String getAttributeMethod(Method m) {
 		String att = "";
 		for (int i = 0; i < m.getParameterCount(); i++) {
-			att += m.getParameterTypes()[i].getSimpleName() + ",";
+			att += m.getParameterTypes()[i].getSimpleName() + ", ";
 		}
-		return att.isEmpty() ? "" : att.substring(0, att.length()-1);
+		return att.isEmpty() ? "" : att.substring(0, att.length()-2);
 	}
 }

@@ -15,7 +15,7 @@ public class MaClassLoader  {
 	            maClasse = myClassLoader.loadClass(classqualifiedname); 
 	        }
 	        catch (Exception e) {
-				e.printStackTrace();
+				System.out.println(e.getMessage());
 			}
 	}
 	

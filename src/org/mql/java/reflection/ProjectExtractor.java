@@ -68,7 +68,7 @@ public class ProjectExtractor {
 						java.lang.Class<?> cls = new MaClassLoader(project.getPath() + "//bin",
 								pk.getName() + "." + file.getName().replace(".class", "")).getMaClass();
 						if (cls != null) {
-							
+
 							if (cls.isInterface()) {
 								Interface in = new Interface(cls);
 								pk.addInterface(in);
@@ -102,9 +102,10 @@ public class ProjectExtractor {
 			Vector<Interface> interfaces = pkgs.get(i).getInterfaces();
 			for (int j = 0; j < interfaces.size(); j++) {
 				setExtensionRelation(project, interfaces.get(j));
+				setRelations(project, cls.get(j));
+
 			}
-			
-			
+
 		}
 	}
 
@@ -134,16 +135,21 @@ public class ProjectExtractor {
 		if (cls.getSuperClass() != null) {
 //			System.out.println(
 //					"ona une extension de class " + cls.getSuperClass().getSimpleName() + " to " + cls.getSimpleName());
-			Entity en=project.getClasses().stream().filter(e->e.getName().equals(cls.getSuperClass().getName())).toList().get(0);
-			project.addRelation(new Extension(en, cls));
+			List<Entity> en = project.getClasses().stream()
+					.filter(e -> e.getName().equals(cls.getSuperClass().getName())).toList();
+			if (!en.isEmpty())
+				project.addRelation(new Extension(en.get(0), cls));
 		}
 	}
 
 	private static void setImplemetationRelation(Project project, Class cls) {
 		for (int i = 0; i < cls.getImplementedClass().length; i++) {
-			Class cl=cls.getImplementedClass()[i];
-			Entity en=project.getClasses().stream().filter(e->e.isInterface()&&e.getName().equals(cl.getName())).toList().get(0);
-			project.addRelation(new Implementation(en, cls));
+			Class cl = cls.getImplementedClass()[i];
+			List<Entity> en = project.getClasses().stream()
+					.filter(e -> e.isInterface() && e.getName().equals(cl.getName())).toList();
+			if (!en.isEmpty())
+				project.addRelation(new Implementation(en.get(i), cls));
+
 		}
 	}
 }

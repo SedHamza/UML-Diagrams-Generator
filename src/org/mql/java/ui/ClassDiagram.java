@@ -103,7 +103,7 @@ public class ClassDiagram extends JPanel {
 
 		for (Relation r : relations) {
 			if (r.isAssociation()) {
-				new Association((Class) r.getSource(), (Class) r.getTarget()).draw(g);
+				new Association(r.getSource(), r.getTarget()).draw(g);
 			}
 			if (r.isExtension()) {
 				new Extends(r.getSource(), r.getTarget()).draw(g);

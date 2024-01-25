@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -28,7 +29,14 @@ public class FieldPart extends JPanel {
     private void displayFields(JTextArea textArea) {
         StringBuilder fieldText = new StringBuilder();
         for (Field field : fields) {
-            fieldText.append(" - ").append(field.getName()).append("\n");
+        	if(Modifier.toString(field.getModifiers()).equals("public")) {
+        		fieldText.append(" + ");
+        	}
+        	else {
+        		fieldText.append(" - ");
+
+        	}
+            fieldText.append(field.getName()).append("\n");
         }
         textArea.setText(fieldText.toString());
     }

@@ -25,7 +25,6 @@ public class PackageNode extends JPanel {
 
         setLayout(new BorderLayout());
         setBackground(Color.red);
-        // Adding packNamePart to the top of the panel
         EntityNamePart packNamePart = new EntityNamePart(pack.getName());
         packNamePart.setBackground(Color.CYAN);
         packNamePart.setPreferredSize(new Dimension(400, 30));
@@ -43,7 +42,6 @@ public class PackageNode extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
         for (int i = 0; i < pack.getClasses().size(); i++) {
-            for (int j = 0; j < 5; j++) {
                 JLabel label = new JLabel(pack.getClasses().get(i).getSimpleName());
                 EmptyBorder paddingBorder = new EmptyBorder(0, 0, 0, 0);
                 Border marginBorder = new EmptyBorder(5, 5, 5, 5);
@@ -52,7 +50,7 @@ public class PackageNode extends JPanel {
                         BorderFactory.createLineBorder(Color.black, 2) // Border color and thickness
                 ));
                 panel.add(label);
-            }
+            
         }
 
 

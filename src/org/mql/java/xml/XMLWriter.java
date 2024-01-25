@@ -63,9 +63,10 @@ public class XMLWriter {
 							"classes");
 					if (classesElement != null)
 						packElement.appendChild(classesElement);
-					Element interfacesElement = getInterfacesXML(project.getPackages().get(i).getInterfaces(), document);
-					if (classesElement != null)
-						packElement.appendChild(classesElement);
+					Element interfacesElement = getInterfacesXML(project.getPackages().get(i).getInterfaces(),
+							document);
+					if (interfacesElement != null)
+						packElement.appendChild(interfacesElement);
 					packsElement.appendChild(packElement);
 				}
 				rootElement.appendChild(packsElement);
@@ -80,8 +81,6 @@ public class XMLWriter {
 	}
 
 	private static Element getInterfacesXML(Vector<Interface> interfaces, Document document) {
-		if (interfaces.isEmpty())
-			return null;
 		Element intefacesElement = document.createElement("interfaces");
 		for (int i = 0; i < interfaces.size(); i++) {
 			Element intefaceElement = document.createElement("interface");
@@ -104,8 +103,7 @@ public class XMLWriter {
 	}
 
 	private static Element getClassesXML(Vector<org.mql.java.models.Class> cls, Document document, String element) {
-		if (cls.isEmpty())
-			return null;
+
 		Element classesElement = document.createElement(element);
 
 		for (int i = 0; i < cls.size(); i++) {
@@ -152,23 +150,23 @@ public class XMLWriter {
 	}
 
 	private static Element getLocalClassXML(org.mql.java.models.Class[] cls, Document document) {
-		if (cls.length == 0)
-			return null;
 
 		Element implementedClassElement = document.createElement("localClasses");
 		Vector<org.mql.java.models.Class> clss = new Vector<>();
 		for (int i = 0; i < cls.length; i++) {
 			clss.add(cls[i]);
 		}
-		implementedClassElement.appendChild(getClassesXML(clss, document, "localClasses"));
+		if (clss.size() != 0)
+			implementedClassElement.appendChild(getClassesXML(clss, document, "localClasses"));
 
 		return implementedClassElement;
 	}
 
 	private static Element getSupperClassXML(Entity cls, Document document) {
-		if (cls == null)
-			return null;
 		Element superClassElement = document.createElement("superClass");
+
+		if (cls == null)
+			return superClassElement;
 		Element superClassNameElement = document.createElement("name");
 		superClassNameElement.appendChild(document.createTextNode(cls.getName()));
 		Element superClassSNameElement = document.createElement("simpleName");
@@ -179,10 +177,11 @@ public class XMLWriter {
 	}
 
 	private static Element getClassImplementedXML(org.mql.java.models.Class[] cls, Document document) {
-		if (cls.length == 0)
-			return null;
-
 		Element implementedClassElement = document.createElement("implentations");
+
+		if (cls.length == 0)
+			return implementedClassElement;
+
 		for (int i = 0; i < cls.length; i++) {
 			Element implementation = document.createElement("implentation");
 
@@ -199,9 +198,10 @@ public class XMLWriter {
 	}
 
 	private static Element getClassFieldsXML(Field[] fields, Document document) {
-		if (fields.length == 0)
-			return null;
 		Element fieldsElement = document.createElement("fields");
+
+		if (fields.length == 0)
+			return fieldsElement;
 
 		for (int i = 0; i < fields.length; i++) {
 			Element fieldElement = document.createElement("field");
@@ -218,9 +218,6 @@ public class XMLWriter {
 	}
 
 	private static Element getClassConstractorXML(Constructor[] constructors, Document document) {
-		if (constructors.length == 0)
-			return null;
-
 		Element constructorsElement = document.createElement("constructors");
 		for (int i = 0; i < constructors.length; i++) {
 			Element constructorElement = document.createElement("constructor");
@@ -236,11 +233,7 @@ public class XMLWriter {
 	}
 
 	private static Element getClassMethodesXML(Method[] methods, Document document) {
-		if (methods.length == 0)
-			return null;
-
 		Element constructorsElement = document.createElement("constructors");
-
 		for (int i = 0; i < methods.length; i++) {
 			Element constructorElement = document.createElement("constructor");
 			constructorElement.setAttribute("modifier", Modifier.toString(methods[i].getModifiers()));
