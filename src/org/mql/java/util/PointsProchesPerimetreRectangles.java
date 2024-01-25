@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 public class PointsProchesPerimetreRectangles {
 
 	  public static double distance(Point p1, Point p2) {
-	        // Calcule la distance entre deux points
 	        return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
 	    }
 
@@ -31,7 +30,6 @@ public class PointsProchesPerimetreRectangles {
 	    }
 
 	    public static Point[] getPerimetre(Rectangle rect) {
-	        // Retourne un tableau des points du périmètre du rectangle
 	        return new Point[] {
 	            new Point(rect.x, rect.y),
 	            new Point(rect.x + rect.width/4, rect.y),

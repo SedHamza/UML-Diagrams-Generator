@@ -30,12 +30,8 @@ import javax.xml.transform.stream.StreamResult;
 
 public class XMLWriter {
 	public static void projectToXML(Project project) {
-		// Obtenez le chemin relatif vers le dossier de ressources
 		String resourcesFolderPath = "resources";
-
-		// Créer une instance de DocumentBuilderFactory
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.newDocument();
@@ -262,7 +258,6 @@ public class XMLWriter {
 	}
 
 	private static String getResourceFolderPath() {
-		// Obtenez le chemin relatif vers le dossier de ressources
 		ClassLoader classLoader = XMLWriter.class.getClassLoader();
 		File resourcesDirectory = new File(classLoader.getResource("").getFile());
 		return resourcesDirectory.getAbsolutePath();

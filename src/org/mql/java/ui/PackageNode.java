@@ -47,7 +47,7 @@ public class PackageNode extends JPanel {
                 Border marginBorder = new EmptyBorder(5, 5, 5, 5);
                 label.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createCompoundBorder(marginBorder, paddingBorder),
-                        BorderFactory.createLineBorder(Color.black, 2) // Border color and thickness
+                        BorderFactory.createLineBorder(Color.black, 2) 
                 ));
                 panel.add(label);
             

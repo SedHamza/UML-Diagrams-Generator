@@ -73,6 +73,9 @@ public class Project {
 	public void addClass(Entity c) {
 		classes.add(c);
 	}
+	public void addAllClass(Vector<Entity> en) {
+		classes.addAll(en);
+	}
 	public void addRelation(Relation r) {
 		relations.add(r);
 	}

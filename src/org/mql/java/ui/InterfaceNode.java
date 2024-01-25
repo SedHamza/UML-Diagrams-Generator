@@ -24,10 +24,10 @@ public class InterfaceNode extends JPanel implements EntityNode{
 	Interface cls;
 	ClassDiagram classDiagram;
 
-	private int x, y; // Coordonnées du coin supérieur gauche du rectangle
+	private int x, y; 
 
-	public static final int WIDTH = 200; // Largeur du rectangle
-	public static final int HEIGHT = 300; // Hauteur du rectangle
+	public static final int WIDTH = 200;
+	public static final int HEIGHT = 300;
 
 	public InterfaceNode(Interface cls, int x, int y, ClassDiagram classDiagram) {
 		this.cls = cls;
@@ -37,17 +37,14 @@ public class InterfaceNode extends JPanel implements EntityNode{
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
-		// Partie 1 : le nom du class
 		EntityNamePart classNamePart = new EntityNamePart("<<inteface>> "+cls.getSimpleName());
 		classNamePart.setBackground(Color.CYAN);
 		classNamePart.setPreferredSize(new Dimension(WIDTH, (int) (HEIGHT * 0.1)));
 		add(classNamePart);
 
-		// Partie 2 : Deuxième JPanel (ajoutez votre contenu ici)
 		FieldPart fieldPart=new FieldPart(cls.getFields());
 		add(fieldPart);
 		
-		// Partie 3 : Troisième JPanel avec JScrollPane
 		MethodPart methodPart=new MethodPart(cls.getMethodes());
 		add(methodPart);	
 		

@@ -2,8 +2,7 @@ package org.mql.java.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.lang.reflect.Field;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 

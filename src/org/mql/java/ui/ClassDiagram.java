@@ -93,7 +93,7 @@ public class ClassDiagram extends JPanel {
 	}
 
 	public void updateAssociations() {
-		repaint(); // Repaint the diagram after updating associations
+		repaint(); 
 	}
 
 	@Override
@@ -114,9 +114,7 @@ public class ClassDiagram extends JPanel {
 			}
 
 		}
-//		for (ClassNode classNode : classNodes) {
-//			new Association(classNode.getX(), classNode.getY(), 500, 500).draw(g);
-//		}
+
 	}
 
 }

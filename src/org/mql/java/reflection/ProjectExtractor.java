@@ -33,7 +33,6 @@ public class ProjectExtractor {
 			project.setName(projectDirectory.getParentFile().getName());
 			project.setPath(projectDirectory.getParentFile().getAbsolutePath());
 
-			// Explorer récursivement les fichiers du projet
 			exploreDirectory(projectDirectory, project, "");
 
 		} catch (Exception e) {
@@ -41,18 +40,7 @@ public class ProjectExtractor {
 		}
 		extractRelations(project);
 		Vector<Relation> relations = project.getRelations();
-//		for (int i = 0; i < relations.size(); i++) {
-//			if (relations.get(i).isAssociation()) {
-//				System.out.println("we have assosiation from " + relations.get(i).getSource().getSimpleName() + " to "
-//						+ relations.get(i).getTarget().getSimpleName());
-//			} else if (relations.get(i).isExtension()) {
-//				System.out.println("we have Extension from " + relations.get(i).getSource().getSimpleName() + " to "
-//						+ relations.get(i).getTarget().getSimpleName());
-//			} else if (relations.get(i).isImplementation()) {
-//				System.out.println("we have Implementation from " + relations.get(i).getSource().getSimpleName()
-//						+ " to " + relations.get(i).getTarget().getSimpleName());
-//			}
-//		}
+
 		return project;
 	}
 
@@ -133,8 +121,6 @@ public class ProjectExtractor {
 
 	private static void setExtensionRelation(Project project, Entity cls) {
 		if (cls.getSuperClass() != null) {
-//			System.out.println(
-//					"ona une extension de class " + cls.getSuperClass().getSimpleName() + " to " + cls.getSimpleName());
 			List<Entity> en = project.getClasses().stream()
 					.filter(e -> e.getName().equals(cls.getSuperClass().getName())).toList();
 			if (!en.isEmpty())

@@ -40,7 +40,6 @@ public class Implementation {
 	}
 
 	private void drawArrow(Graphics g, int x1, int y1, int x2, int y2) {
-		// Draw an arrowhead at the end of the line
 		int arrowSize = 16;
 		double angle = Math.atan2(y2 - y1, x2 - x1);
 		int x3 = x2 - (int) (arrowSize * Math.cos(angle - Math.PI / 6));
@@ -50,11 +49,9 @@ public class Implementation {
 
 		Polygon triangle = createFilledTriangle(x2, y2, x3, y3, x4, y4);
 
-//		g.drawLine(x2, y2, x3, y3);
-//		g.drawLine(x2, y2, x4, y4);
+
 		g.fillPolygon(triangle);
 
-//		g.drawLine(x3, y3, x4, y4);
 	}
 
 	private Polygon createFilledTriangle(int x1, int y1, int x2, int y2, int x3, int y3) {

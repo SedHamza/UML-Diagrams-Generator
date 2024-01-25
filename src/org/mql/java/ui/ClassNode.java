@@ -23,10 +23,10 @@ import org.mql.java.ui.relation.Association;
 public class ClassNode extends JPanel implements EntityNode {
 	ClassDiagram classDiagram;
 	Class cls;
-	private int x, y; // Coordonnées du coin supérieur gauche du rectangle
+	private int x, y;
 
-	public static final int WIDTH = 200; // Largeur du rectangle
-	public static final int HEIGHT = 300; // Hauteur du rectangle
+	public static final int WIDTH = 200; 
+	public static final int HEIGHT = 300; 
 
 	public ClassNode(Class cls, int x, int y, ClassDiagram classDiagram) {
 		this.cls = cls;
@@ -42,11 +42,9 @@ public class ClassNode extends JPanel implements EntityNode {
 		classNamePart.setPreferredSize(new Dimension(WIDTH, (int) (HEIGHT * 0.1)));
 		add(classNamePart);
 
-		// Partie 2 : Deuxième JPanel (ajoutez votre contenu ici)
 		FieldPart fieldPart = new FieldPart(cls.getFields());
 		add(fieldPart);
 
-		// Partie 3 : Troisième JPanel avec JScrollPane
 		MethodPart methodPart = new MethodPart(cls.getMethodes());
 		add(methodPart);
 

@@ -4,8 +4,6 @@ public class Extension extends Relation implements RelationType {
 	
 	public Extension(Entity source, Entity target) {
 		super(source, target);
-//		System.out.println("we haaaavee"+source.getSimpleName());
-
 	}
 
 	public boolean isAggregation() {

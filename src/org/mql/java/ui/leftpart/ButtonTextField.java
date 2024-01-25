@@ -47,16 +47,12 @@ public class ButtonTextField extends JPanel {
 		add(classRadioButton);
 		add(run);
 
-		// Set horizontal alignment to the left
 		chooseButton.setHorizontalAlignment(JButton.LEFT);
 
-		// Group the radio buttons so that only one can be selected at a time
 		ButtonGroup radioButtonGroup = new ButtonGroup();
 		radioButtonGroup.add(packageRadioButton);
 		radioButtonGroup.add(classRadioButton);
 
-//		packageRadioButton.addActionListener(e -> diagrameChoose());
-//		classRadioButton.addActionListener(e -> diagrameChoose());
 	}
 
 	private void run() {
@@ -85,8 +81,6 @@ public class ButtonTextField extends JPanel {
 	private String diagrameChoose() {
 		boolean isPackageSelected = packageRadioButton.isSelected();
 		boolean isClassSelected = classRadioButton.isSelected();
-
-		// Handle the logic based on radio button states
 		if (isPackageSelected) {
 			System.out.println("Package selected");
 			return "package";

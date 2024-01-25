@@ -33,12 +33,9 @@ public class XMLParser {
 
 	public XMLParser(String source) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newDefaultInstance();
-		// factory.setValidating(true);//pour un parseur validant
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document document = builder.parse(source);
-			// Element et un Node
-			// document.getDocumentElement();//=>Element
 			Node node = document.getFirstChild();
 			while (node.getNodeType() != Node.ELEMENT_NODE) {
 				node = node.getNextSibling();

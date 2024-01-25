@@ -1,6 +1,5 @@
 package org.mql.java.models;
 
-import java.beans.JavaBean;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 

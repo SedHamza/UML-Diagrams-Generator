@@ -5,7 +5,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import org.mql.java.ui.ClassNode;
 
 public class Class extends Entity {
 	private String modifier;
@@ -27,7 +26,6 @@ public class Class extends Entity {
 		if (cls.getSuperclass() != Object.class) {
 			setSuperClass(new Class(cls.getSuperclass().getName()));
 		}
-//			superClass = cls.getSuperclass() == Object.class ? null : new Class(cls.getSuperclass());
 		implementedClass = cls.getInterfaces() == null ? new Class[0] : new Class[cls.getInterfaces().length];
 		for (int i = 0; i < implementedClass.length; i++) {
 			implementedClass[i] = new Class(cls.getInterfaces()[i].getName());
@@ -41,7 +39,6 @@ public class Class extends Entity {
 
 	public Class(String className) {
 		super(className);
-		System.out.println("--" + className);
 	}
 
 	public Method[] getMethodes() {
