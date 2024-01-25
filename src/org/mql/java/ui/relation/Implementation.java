@@ -2,49 +2,65 @@ package org.mql.java.ui.relation;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+
+import org.mql.java.models.Class;
+import org.mql.java.models.Entity;
+import org.mql.java.ui.ClassNode;
+import org.mql.java.ui.EntityNode;
+import org.mql.java.util.PointsProchesPerimetreRectangles;
 
 public class Implementation {
 
+	private Entity superClass;
+	private Entity subClass;
 
-    private int class1X = 100;
-    private int class1Y = 100;
-    private int class1Width = 150;
-    private int class1Height = 80;
+	public Implementation(Entity superClass, Entity subClass) {
+		this.superClass = superClass;
+		this.subClass = subClass;
+	}
 
-    private int class2X = 300;
-    private int class2Y = 100;
-    private int class2Width = 150;
-    private int class2Height = 80;
+	public void draw(Graphics g) {
+		EntityNode node = superClass.getEntityNode();
+		Rectangle r1 = new Rectangle(node.getX(), node.getY(), node.getWidth(), node.getHeight());
+		node = subClass.getEntityNode();
 
-    protected void draw(Graphics g) {
+		Rectangle r2 = new Rectangle(node.getX(), node.getY(), node.getWidth(), node.getHeight());
+		Point[] pts = PointsProchesPerimetreRectangles.pointsLesPlusProchesPerimetre(r1, r2);
+		int x1 = (int) pts[0].getX();
+		int y1 = (int) pts[0].getY();
+		int x2 = (int) pts[1].getX();
+		int y2 = (int) pts[1].getY();
 
-        Point class1Center = new Point(class1X + class1Width / 2, class1Y + class1Height / 2);
-        Point class2Center = new Point(class2X + class2Width / 2, class2Y + class2Height / 2);
+		g.drawLine(x1, y1, x2, y2);
+		g.drawLine(x1, y1, x2+1, y2+1);
 
-        drawImplementationArrow(g, class1Center, class2Center);
-    }
+		drawArrow(g, x1, y1, x2, y2);
+	}
 
-    private void drawImplementationArrow(Graphics g, Point start, Point end) {
-        g.drawLine(start.x, start.y, end.x, end.y);
+	private void drawArrow(Graphics g, int x1, int y1, int x2, int y2) {
+		// Draw an arrowhead at the end of the line
+		int arrowSize = 16;
+		double angle = Math.atan2(y2 - y1, x2 - x1);
+		int x3 = x2 - (int) (arrowSize * Math.cos(angle - Math.PI / 6));
+		int y3 = y2 - (int) (arrowSize * Math.sin(angle - Math.PI / 6));
+		int x4 = x2 - (int) (arrowSize * Math.cos(angle + Math.PI / 6));
+		int y4 = y2 - (int) (arrowSize * Math.sin(angle + Math.PI / 6));
 
-        drawArrowhead(g, start, end);
-    }
+		Polygon triangle = createFilledTriangle(x2, y2, x3, y3, x4, y4);
 
-    private void drawArrowhead(Graphics g, Point start, Point end) {
-        double angle = Math.atan2(end.y - start.y, end.x - start.x);
-        double arrowLength = 10;
-        double arrowAngle = Math.toRadians(20);
+//		g.drawLine(x2, y2, x3, y3);
+//		g.drawLine(x2, y2, x4, y4);
+		g.fillPolygon(triangle);
 
-        int x1 = end.x;
-        int y1 = end.y;
+//		g.drawLine(x3, y3, x4, y4);
+	}
 
-        int x2 = (int) (end.x - arrowLength * Math.cos(angle - arrowAngle));
-        int y2 = (int) (end.y - arrowLength * Math.sin(angle - arrowAngle));
+	private Polygon createFilledTriangle(int x1, int y1, int x2, int y2, int x3, int y3) {
+		int[] xPoints = { x1, x2, x3 };
+		int[] yPoints = { y1, y2, y3 };
 
-        int x3 = (int) (end.x - arrowLength * Math.cos(angle + arrowAngle));
-        int y3 = (int) (end.y - arrowLength * Math.sin(angle + arrowAngle));
-
-        g.fillPolygon(new int[]{x1, x2, x3}, new int[]{y1, y2, y3}, 3);
-    }
-
+		return new Polygon(xPoints, yPoints, 3);
+	}
 }

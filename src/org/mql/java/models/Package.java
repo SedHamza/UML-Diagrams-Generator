@@ -2,8 +2,11 @@ package org.mql.java.models;
 
 import java.util.Vector;
 
+import org.mql.java.ui.PackageNode;
+
 public class Package {
 	private String name;
+	private PackageNode packageNode;
 	private Vector<Class> classes;
 	private Vector<Interface> interfaces;
 
@@ -56,6 +59,14 @@ public class Package {
 
 	public void addInterface(Interface in) {
 		interfaces.add(in);
+	}
+
+	public PackageNode getPackageNode() {
+		return packageNode;
+	}
+
+	public void setPackageNode(PackageNode packageNode) {
+		this.packageNode = packageNode;
 	}
 
 	@Override

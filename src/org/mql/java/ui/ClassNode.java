@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 import org.mql.java.models.Class;
 import org.mql.java.ui.relation.Association;
 
-public class ClassNode extends JPanel implements EntityNode{
+public class ClassNode extends JPanel implements EntityNode {
 	ClassDiagram classDiagram;
 	Class cls;
 	private int x, y; // Coordonnées du coin supérieur gauche du rectangle
@@ -33,6 +33,7 @@ public class ClassNode extends JPanel implements EntityNode{
 		this.x = x;
 		this.y = y;
 		this.classDiagram = classDiagram;
+		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		// Partie 1 : le nom du class
@@ -54,15 +55,10 @@ public class ClassNode extends JPanel implements EntityNode{
 		addMouseMotionListener(mouseListener);
 
 	}
-
-
-	private List<Association> associations = new ArrayList<>();
-
-	// Add this method to update association positions
-	public void updateAssociations() {
-		for (Association association : associations) {
-			association.updatePosition(this.getX(), this.getY());
-		}
+	@Override
+	public void setPreferredSize(Dimension preferredSize) {
+		// TODO Auto-generated method stub
+		super.setPreferredSize(preferredSize);
 	}
 
 	private class MyMouseListener extends MouseAdapter {
@@ -75,7 +71,6 @@ public class ClassNode extends JPanel implements EntityNode{
 			classDiagram.updateAssociations();
 		}
 	}
-
 
 	public int getX() {
 		return x;

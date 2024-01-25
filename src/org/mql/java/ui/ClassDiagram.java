@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import org.mql.java.models.Relation;
 import org.mql.java.ui.relation.Association;
 import org.mql.java.ui.relation.Extends;
+import org.mql.java.ui.relation.Implementation;
 import org.mql.java.models.Class;
 import org.mql.java.models.Entity;
 import org.mql.java.models.Interface;
@@ -62,13 +63,12 @@ public class ClassDiagram extends JPanel {
 				entities.get(i).setEntityNode(addInterface((Interface) entities.get(i), cln, lgn));
 			}
 			cln++;
-
 		}
 	}
 
 	ClassNode addClass(Class c, int cln, int lgn) {
-		ClassNode classNode = new ClassNode(c, ClassNode.WIDTH * cln + 50 * (cln), ClassNode.HEIGHT * lgn + 50 * (lgn),
-				this);
+		ClassNode classNode = new ClassNode(c, ClassNode.WIDTH * cln + 50 * (cln) + 10,
+				ClassNode.HEIGHT * lgn + 50 * (lgn)+10, this);
 		classNode.setLocation(classNode.getX(), classNode.getY());
 
 		classNode.setSize(ClassNode.WIDTH, ClassNode.HEIGHT);
@@ -81,8 +81,8 @@ public class ClassDiagram extends JPanel {
 	}
 
 	private InterfaceNode addInterface(Interface in, int cln, int lgn) {
-		InterfaceNode interfaceNode = new InterfaceNode(in, ClassNode.WIDTH * cln + 50 * (cln),
-				ClassNode.HEIGHT * lgn + 50 * (lgn), this);
+		InterfaceNode interfaceNode = new InterfaceNode(in, ClassNode.WIDTH * cln + 50 * (cln) + 10,
+				ClassNode.HEIGHT * lgn + 50 * (lgn) + 10, this);
 		interfaceNode.setLocation(interfaceNode.getX(), interfaceNode.getY());
 		interfaceNode.setSize(ClassNode.WIDTH, ClassNode.HEIGHT);
 		interfaceNode.setBackground(Color.white);
@@ -108,8 +108,8 @@ public class ClassDiagram extends JPanel {
 			if (r.isExtension()) {
 				new Extends(r.getSource(), r.getTarget()).draw(g);
 			}
-			if(r.isImplementation()) {
-				new Extends(r.getSource(), r.getTarget()).draw(g);
+			if (r.isImplementation()) {
+				new Implementation(r.getSource(), r.getTarget()).draw(g);
 
 			}
 

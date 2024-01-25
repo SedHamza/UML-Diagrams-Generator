@@ -25,7 +25,6 @@ public class Class extends Entity {
 		fields = cls.getDeclaredFields();
 		modifier = Modifier.toString(cls.getModifiers());
 		if (cls.getSuperclass() != Object.class) {
-			System.out.println(cls.getSuperclass().getSimpleName());
 			setSuperClass(new Class(cls.getSuperclass().getName()));
 		}
 //			superClass = cls.getSuperclass() == Object.class ? null : new Class(cls.getSuperclass());

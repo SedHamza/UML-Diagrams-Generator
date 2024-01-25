@@ -49,7 +49,6 @@ public abstract class Entity {
 
 	public void setSuperClass(Entity superClass) {
 		this.superClass = superClass;
-		System.out.println(superClass.getSimpleName());
 
 	}
 

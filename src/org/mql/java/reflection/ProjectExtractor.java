@@ -40,20 +40,19 @@ public class ProjectExtractor {
 			System.out.println("Erreur en find file project : " + e.getMessage());
 		}
 		extractRelations(project);
-//		System.out.println(project);
 		Vector<Relation> relations = project.getRelations();
-		for (int i = 0; i < relations.size(); i++) {
-			if (relations.get(i).isAssociation()) {
-				System.out.println("we have assosiation from " + relations.get(i).getSource().getSimpleName() + " to "
-						+ relations.get(i).getTarget().getSimpleName());
-			} else if (relations.get(i).isExtension()) {
-				System.out.println("we have Extension from " + relations.get(i).getSource().getSimpleName() + " to "
-						+ relations.get(i).getTarget().getSimpleName());
-			} else if (relations.get(i).isImplementation()) {
-				System.out.println("we have Implementation from " + relations.get(i).getSource().getSimpleName()
-						+ " to " + relations.get(i).getTarget().getSimpleName());
-			}
-		}
+//		for (int i = 0; i < relations.size(); i++) {
+//			if (relations.get(i).isAssociation()) {
+//				System.out.println("we have assosiation from " + relations.get(i).getSource().getSimpleName() + " to "
+//						+ relations.get(i).getTarget().getSimpleName());
+//			} else if (relations.get(i).isExtension()) {
+//				System.out.println("we have Extension from " + relations.get(i).getSource().getSimpleName() + " to "
+//						+ relations.get(i).getTarget().getSimpleName());
+//			} else if (relations.get(i).isImplementation()) {
+//				System.out.println("we have Implementation from " + relations.get(i).getSource().getSimpleName()
+//						+ " to " + relations.get(i).getTarget().getSimpleName());
+//			}
+//		}
 		return project;
 	}
 
@@ -133,8 +132,8 @@ public class ProjectExtractor {
 
 	private static void setExtensionRelation(Project project, Entity cls) {
 		if (cls.getSuperClass() != null) {
-			System.out.println(
-					"ona une extension de class " + cls.getSuperClass().getSimpleName() + " to " + cls.getSimpleName());
+//			System.out.println(
+//					"ona une extension de class " + cls.getSuperClass().getSimpleName() + " to " + cls.getSimpleName());
 			Entity en=project.getClasses().stream().filter(e->e.getName().equals(cls.getSuperClass().getName())).toList().get(0);
 			project.addRelation(new Extension(en, cls));
 		}

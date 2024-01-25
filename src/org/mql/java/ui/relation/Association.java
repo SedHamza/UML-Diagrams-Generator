@@ -40,5 +40,7 @@ public class Association {
 	public void draw(Graphics g) {
 
 		g.drawLine(sx, sy, tx, ty);
+		g.drawLine(sx, sy, tx, ty+1);
+
 	}
 }
